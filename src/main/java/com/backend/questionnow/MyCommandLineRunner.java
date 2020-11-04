@@ -3,10 +3,13 @@ package com.backend.questionnow;
 import com.backend.questionnow.entity.Answer;
 import com.backend.questionnow.entity.Question;
 import com.backend.questionnow.entity.Questionnaire;
+import com.backend.questionnow.entity.User;
 import com.backend.questionnow.repository.QuestionnaireRepository;
+import com.backend.questionnow.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.core.annotation.Order;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -14,7 +17,14 @@ import org.springframework.stereotype.Component;
 public class MyCommandLineRunner implements CommandLineRunner {
 
     @Autowired
+    PasswordEncoder passwordEncoder;
+
+    @Autowired
     QuestionnaireRepository questionnaireRepository;
+
+    @Autowired
+    UserRepository userRepository;
+
 
 
     @Override
@@ -45,5 +55,9 @@ public class MyCommandLineRunner implements CommandLineRunner {
 
         Questionnaire questionnaire2 = new Questionnaire("Ankieta 2");
         questionnaireRepository.save(questionnaire2);
+
+        User user = new User("Bartek","mail", passwordEncoder.encode("123"));
+        userRepository.save(user);
+
         }
     }
