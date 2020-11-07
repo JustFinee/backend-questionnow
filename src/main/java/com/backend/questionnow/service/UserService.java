@@ -2,7 +2,7 @@ package com.backend.questionnow.service;
 
 import com.backend.questionnow.entity.User;
 import com.backend.questionnow.repository.UserRepository;
-import com.backend.questionnow.security.CustomException;
+import com.backend.questionnow.security.AuthException;
 import com.backend.questionnow.security.JwtTokenProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -11,6 +11,8 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import javax.servlet.http.HttpServletResponse;
 
 
 @Service
@@ -28,12 +30,13 @@ public class UserService {
     @Autowired
     private AuthenticationManager authenticationManager;
 
-    public String signin(String username, String password) {
+    public void signin(String username, String password, HttpServletResponse httpServletResponse) {
         try {
             authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username, password));
-            return jwtTokenProvider.createToken(username, userRepository.findByEmail(username).getRoles());
+            String token = jwtTokenProvider.createToken(username, userRepository.findByEmail(username).getRoles());
+            httpServletResponse.addHeader("Token",token);
         } catch (AuthenticationException e) {
-            throw new CustomException("Invalid username/password supplied", HttpStatus.UNPROCESSABLE_ENTITY);
+            throw new AuthException("Invalid username/password supplied", HttpStatus.UNAUTHORIZED);
         }
     }
 
