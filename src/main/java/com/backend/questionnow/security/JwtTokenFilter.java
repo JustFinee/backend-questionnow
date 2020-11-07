@@ -4,14 +4,11 @@ import java.io.IOException;
 
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
-import javax.servlet.ServletRequest;
-import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.web.filter.GenericFilterBean;
 
 import org.springframework.web.filter.OncePerRequestFilter;
 
@@ -31,14 +28,14 @@ public class JwtTokenFilter extends OncePerRequestFilter {
             if (token != null && jwtTokenProvider.validateToken(token)) {
                 Authentication auth = jwtTokenProvider.getAuthentication(token);
                 SecurityContextHolder.getContext().setAuthentication(auth);
+
             }
-        } catch (CustomException ex) {
-            //this is very important, since it guarantees the user is not authenticated at all
+        } catch (AuthException ex) {
             SecurityContextHolder.clearContext();
             httpServletResponse.sendError(ex.getHttpStatus().value(), ex.getMessage());
             return;
         }
-
+       // httpServletResponse.addHeader("Token","bla");
         filterChain.doFilter(httpServletRequest, httpServletResponse);
     }
 

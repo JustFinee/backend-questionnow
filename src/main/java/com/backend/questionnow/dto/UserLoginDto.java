@@ -1,0 +1,14 @@
+package com.backend.questionnow.dto;
+
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
+@Getter
+@Setter
+@NoArgsConstructor
+public class UserLoginDto {
+
+    String email;
+    String password;
+}
