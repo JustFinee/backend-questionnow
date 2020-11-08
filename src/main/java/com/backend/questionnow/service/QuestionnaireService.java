@@ -4,9 +4,11 @@ import com.backend.questionnow.dto.QuestionnaireDto;
 import com.backend.questionnow.entity.Questionnaire;
 import com.backend.questionnow.entity.User;
 import com.backend.questionnow.repository.QuestionnaireRepository;
+import com.backend.questionnow.security.CustomException;
 import javassist.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -27,24 +29,24 @@ public class QuestionnaireService {
         return questionnaireRepository.save(questionnaire);
     }
 
-    public List<QuestionnaireDto> getAllUserQuestionnaires(Long userId) throws NotFoundException {
+    public List<QuestionnaireDto> getAllUserQuestionnaires(Long userId) throws CustomException {
 
         User user = userService.findUserById(userId);
         List<Questionnaire> listQuestionnaire = user.getQuestionnaireList();
         return mapQuestionnaireListToQuestionnaireDtoList(listQuestionnaire);
     }
 
-    public Questionnaire getQuestionnaireById(Long questionnaireId) throws NotFoundException {
+    public Questionnaire getQuestionnaireById(Long questionnaireId) throws CustomException {
         Optional<Questionnaire> questionnaire = questionnaireRepository.findById(questionnaireId);
-        return questionnaire.orElseThrow(() -> new NotFoundException("Not Found questionnaire with id: " + questionnaireId));
+        return questionnaire.orElseThrow(() -> new CustomException("NotFoundQuestionnaireException","Not Found questionnaire with id: " + questionnaireId, HttpStatus.NOT_FOUND));
     }
 
-    public QuestionnaireDto getStartQuestionnaire(Long questionnaireId) throws NotFoundException {
+    public QuestionnaireDto getStartQuestionnaire(Long questionnaireId) throws CustomException {
         Questionnaire questionnaire = getQuestionnaireById(questionnaireId);
         return mapQuestionnaireToQuestionnaireDto(questionnaire);
     }
 
-    private QuestionnaireDto mapQuestionnaireToQuestionnaireDto(Questionnaire questionnaire) throws NotFoundException {
+    private QuestionnaireDto mapQuestionnaireToQuestionnaireDto(Questionnaire questionnaire) {
         return new QuestionnaireDto(questionnaire.getQuestionnaireId(), questionnaire.getName(), questionnaire.getFirstQuestion());
     }
 
@@ -54,7 +56,7 @@ public class QuestionnaireService {
                 .forEach(questionnaire -> {
                     try {
                         questionnaireDtoList.add(mapQuestionnaireToQuestionnaireDto(questionnaire));
-                    } catch (NotFoundException e) {
+                    } catch (CustomException e) {
                         e.printStackTrace();
                     }
                 });

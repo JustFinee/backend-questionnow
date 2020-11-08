@@ -20,9 +20,6 @@ public class MyCommandLineRunner implements CommandLineRunner {
     PasswordEncoder passwordEncoder;
 
     @Autowired
-    QuestionnaireRepository questionnaireRepository;
-
-    @Autowired
     UserRepository userRepository;
 
 
@@ -56,10 +53,12 @@ public class MyCommandLineRunner implements CommandLineRunner {
         questionnaire.addQuestion(question3);
         questionnaire1.addQuestion(question4);
 
-        User user = new User("Bartek","mail", passwordEncoder.encode("123"));
+        User user = new User("Bartek","bartek", passwordEncoder.encode("123"));
+        User user1 = new User("Ania","ania", passwordEncoder.encode("123"));
         user.addQuestionnaire(questionnaire);
         user.addQuestionnaire(questionnaire1);
         userRepository.save(user);
+        userRepository.save(user1);
 
         }
     }

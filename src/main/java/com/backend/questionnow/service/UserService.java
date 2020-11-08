@@ -1,8 +1,10 @@
 package com.backend.questionnow.service;
 
+import com.backend.questionnow.dto.UserLoginDto;
+import com.backend.questionnow.dto.UserRegisterDto;
 import com.backend.questionnow.entity.User;
 import com.backend.questionnow.repository.UserRepository;
-import com.backend.questionnow.security.AuthException;
+import com.backend.questionnow.security.CustomException;
 import com.backend.questionnow.security.JwtTokenProvider;
 import javassist.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,28 +34,32 @@ public class UserService {
     @Autowired
     private AuthenticationManager authenticationManager;
 
-    public void signin(String username, String password, HttpServletResponse httpServletResponse) {
+    public void signIn(UserLoginDto userLoginDto, HttpServletResponse httpServletResponse) {
         try {
-            authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username, password));
-            String token = jwtTokenProvider.createToken(username, userRepository.findByEmail(username).getRoles());
+            authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(userLoginDto.getEmail(),userLoginDto.getPassword()));
+            String token = jwtTokenProvider.createToken(userLoginDto.getEmail(), userRepository.findByEmail(userLoginDto.getEmail()).getRoles());
             httpServletResponse.addHeader("Token",token);
         } catch (AuthenticationException e) {
-            throw new AuthException("Invalid username/password supplied", HttpStatus.UNAUTHORIZED);
+            throw new CustomException("InvalidLoginCredentialsException","Invalid username/password supplied", HttpStatus.UNAUTHORIZED);
         }
     }
 
-    public User findUser(String email) {
-        return userRepository.findByEmail(email);
+    public void signUp(UserRegisterDto userRegisterDto)
+    {
+        if (Optional.ofNullable(userRepository.findByEmail(userRegisterDto.getEmail())).isPresent())
+        {
+            throw new CustomException("EmailExistsException","Email already is used",HttpStatus.CONFLICT);
+        }
+        else
+        {
+            userRepository.save(new User(userRegisterDto.getName(),userRegisterDto.getEmail(),passwordEncoder.encode(userRegisterDto.getPassword())));
+        }
     }
 
-    public User createUser(User user) {
-        return userRepository.save(user);
-    }
-
-    public User findUserById(Long userId) throws NotFoundException
+    public User findUserById(Long userId) throws CustomException
     {
         Optional<User> user = userRepository.findById(userId);
-        return user.orElseThrow(() -> new NotFoundException("Not Found user with id: "+userId ));
+        return user.orElseThrow(() -> new CustomException("NotFoundUserException","Not Found user with id: "+userId,HttpStatus.NOT_FOUND ));
     }
 
 
