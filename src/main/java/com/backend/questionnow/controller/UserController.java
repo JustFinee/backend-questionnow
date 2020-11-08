@@ -6,6 +6,9 @@ import com.backend.questionnow.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
@@ -18,6 +21,7 @@ public class UserController {
     private UserService userService;
 
     @PostMapping("/signin")
+    //@PreAuthorize("#userLoginDto.email == authentication.principal.username")
     public ResponseEntity login(@RequestBody UserLoginDto userLoginDto, HttpServletResponse httpServletResponse) {
         try{
             userService.signin(userLoginDto.getEmail(),userLoginDto.getPassword(),httpServletResponse);

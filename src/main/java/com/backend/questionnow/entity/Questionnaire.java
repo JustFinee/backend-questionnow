@@ -5,7 +5,6 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.omg.CosNaming.NamingContextPackage.NotFound;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -35,15 +34,13 @@ public class Questionnaire {
         this.name = name;
     }
 
-    public void addQuestion(Question question)
-    {
+    public void addQuestion(Question question) {
         questionList.add(question);
     }
 
-    public Question getFirstQuestion() throws NotFoundException
-    {
+    public Question getFirstQuestion() throws NotFoundException {
         return questionList.stream()
                 .findFirst()
-                .orElseThrow(() -> new NotFoundException("There is no questions in this questionnaire with id: "+this.questionnaireId));
+                .orElseThrow(() -> new NotFoundException("There is no questions in this questionnaire with id: " + this.questionnaireId));
     }
 }

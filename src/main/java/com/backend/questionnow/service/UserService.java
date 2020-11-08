@@ -4,6 +4,7 @@ import com.backend.questionnow.entity.User;
 import com.backend.questionnow.repository.UserRepository;
 import com.backend.questionnow.security.AuthException;
 import com.backend.questionnow.security.JwtTokenProvider;
+import javassist.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -13,6 +14,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletResponse;
+import java.util.Optional;
 
 
 @Service
@@ -46,6 +48,12 @@ public class UserService {
 
     public User createUser(User user) {
         return userRepository.save(user);
+    }
+
+    public User findUserById(Long userId) throws NotFoundException
+    {
+        Optional<User> user = userRepository.findById(userId);
+        return user.orElseThrow(() -> new NotFoundException("Not Found user with id: "+userId ));
     }
 
 

@@ -23,15 +23,17 @@ public class MyUserDetails implements UserDetailsService {
             throw new UsernameNotFoundException("User '" + username + "' not found");
         }
 
-        return org.springframework.security.core.userdetails.User//
+        /*return org.springframework.security.core.userdetails.User//
                 .withUsername(username)//
-                .password(user.getPassword())//
+                .password(user.getPassword())
                 .authorities(user.getRoles())//
                 .accountExpired(false)//
                 .accountLocked(false)//
                 .credentialsExpired(false)//
                 .disabled(false)//
-                .build();
+                .build();*/
+        UserExt userExt = new UserExt(username, user.getPassword(),user.getRoles(),1L);
+        return userExt;
     }
 
 }
