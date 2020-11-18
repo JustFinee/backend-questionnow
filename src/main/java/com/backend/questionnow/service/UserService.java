@@ -37,8 +37,14 @@ public class UserService {
     public void signIn(UserLoginDto userLoginDto, HttpServletResponse httpServletResponse) {
         try {
             authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(userLoginDto.getEmail(),userLoginDto.getPassword()));
-            String token = jwtTokenProvider.createToken(userLoginDto.getEmail(), userRepository.findByEmail(userLoginDto.getEmail()).getRoles());
-            httpServletResponse.addHeader("Token",token);
+            User user = userRepository.findByEmail(userLoginDto.getEmail());
+            String token = jwtTokenProvider.createToken(userLoginDto.getEmail(), user.getRoles());
+            httpServletResponse.addHeader("Access-Control-Expose-Headers", "token,id,name");
+            httpServletResponse.addHeader("token",token);
+            httpServletResponse.addHeader("id",String.valueOf(user.getUserId()));
+            httpServletResponse.addHeader("name",user.getName());
+
+
         } catch (AuthenticationException e) {
             throw new CustomException("InvalidLoginCredentialsException","Invalid username/password supplied", HttpStatus.UNAUTHORIZED);
         }
@@ -60,6 +66,11 @@ public class UserService {
     {
         Optional<User> user = userRepository.findById(userId);
         return user.orElseThrow(() -> new CustomException("NotFoundUserException","Not Found user with id: "+userId,HttpStatus.NOT_FOUND ));
+    }
+
+    public void saveUser(User user)
+    {
+        userRepository.save(user);
     }
 
 

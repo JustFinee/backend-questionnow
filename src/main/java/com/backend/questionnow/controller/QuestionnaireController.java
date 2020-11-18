@@ -13,6 +13,8 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDateTime;
+
 @RestController
 public class QuestionnaireController {
 
@@ -23,10 +25,10 @@ public class QuestionnaireController {
     UserService userService;
 
     @PostMapping("/createQuestionnaire")
-    public Questionnaire createQuestionnaire(@RequestBody Questionnaire questionnaire) {
+    @PreAuthorize("#userId == authentication.principal.userId")
+    public Questionnaire createQuestionnaire(@RequestBody Questionnaire questionnaire, @RequestParam Long userId) {
         return questionnaireService.saveQuestionnaire(questionnaire);
     }
-
 
     @GetMapping("/getAllUserQuestionnaires")
     @PreAuthorize("#userId == authentication.principal.userId")
@@ -35,6 +37,17 @@ public class QuestionnaireController {
             return new ResponseEntity(questionnaireService.getAllUserQuestionnaires(userId), HttpStatus.OK);
         } catch (CustomException e) {
             return new ResponseEntity(e.getName()+" "+e.getMessage(), e.getHttpStatus());
+        }
+
+    }
+
+    @GetMapping("/getUserQuestionnaire")
+    @PreAuthorize("#userId == authentication.principal.userId")
+    public ResponseEntity getUserQuestionnaire(@RequestParam Long userId, @RequestParam Long questionnaireId) {
+        try {
+            return new ResponseEntity(questionnaireService.getUserQuestionnaire(questionnaireId), HttpStatus.OK);
+        } catch (CustomException e) {
+            return new ResponseEntity(e.getMessage(), e.getHttpStatus());
         }
 
     }
@@ -48,5 +61,29 @@ public class QuestionnaireController {
         }
 
     }
+
+    @PutMapping("/changeQuestionnaire")
+    @PreAuthorize("#userId == authentication.principal.userId")
+    public ResponseEntity changeTittleQuestionnaire(@RequestBody Questionnaire questionnaire,@RequestParam Long userId) {
+        try {
+            return new ResponseEntity(questionnaireService.changeQuestionnaire(questionnaire), HttpStatus.OK);
+        } catch (CustomException e) {
+            return new ResponseEntity(e.getMessage(), e.getHttpStatus());
+        }
+
+    }
+
+    @DeleteMapping("/deleteQuestionnaire")
+    @PreAuthorize("#userId == authentication.principal.userId")
+    public ResponseEntity deleteQuestionnaire(@RequestParam Long userId, @RequestParam Long questionnaireId){
+        try{
+            questionnaireService.deleteQuestionnaire(questionnaireId,userId);
+            return new ResponseEntity(HttpStatus.NO_CONTENT);
+        }
+        catch (CustomException e) {
+            return new ResponseEntity(e.getMessage(), e.getHttpStatus());
+        }
+    }
+
 
 }

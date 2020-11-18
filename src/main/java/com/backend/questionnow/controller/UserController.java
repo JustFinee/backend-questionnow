@@ -39,7 +39,7 @@ public class UserController {
         }
         catch (CustomException e)
         {
-            return new ResponseEntity(e.getName()+" "+ e.getMessage(),e.getHttpStatus());
+            return new ResponseEntity(e.getMessage(),e.getHttpStatus());
         }
     }
 }

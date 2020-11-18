@@ -1,6 +1,7 @@
 package com.backend.questionnow.service;
 
 import com.backend.questionnow.dto.QuestionnaireDto;
+import com.backend.questionnow.entity.Question;
 import com.backend.questionnow.entity.Questionnaire;
 import com.backend.questionnow.entity.User;
 import com.backend.questionnow.repository.QuestionnaireRepository;
@@ -36,6 +37,11 @@ public class QuestionnaireService {
         return mapQuestionnaireListToQuestionnaireDtoList(listQuestionnaire);
     }
 
+    public Questionnaire changeQuestionnaire(Questionnaire questionnaire)
+    {
+        return questionnaireRepository.save(questionnaire);
+    }
+
     public Questionnaire getQuestionnaireById(Long questionnaireId) throws CustomException {
         Optional<Questionnaire> questionnaire = questionnaireRepository.findById(questionnaireId);
         return questionnaire.orElseThrow(() -> new CustomException("NotFoundQuestionnaireException","Not Found questionnaire with id: " + questionnaireId, HttpStatus.NOT_FOUND));
@@ -45,6 +51,18 @@ public class QuestionnaireService {
         Questionnaire questionnaire = getQuestionnaireById(questionnaireId);
         return mapQuestionnaireToQuestionnaireDto(questionnaire);
     }
+
+    public Questionnaire getUserQuestionnaire(Long questionnaireId){
+        return getQuestionnaireById(questionnaireId);
+    }
+
+    public void deleteQuestionnaire(Long questionnaireId, Long userId){
+        Questionnaire questionnaire = getQuestionnaireById(questionnaireId);
+        User user = userService.findUserById(userId);
+        user.getQuestionnaireList().remove(questionnaire);
+        userService.saveUser(user);
+    }
+
 
     private QuestionnaireDto mapQuestionnaireToQuestionnaireDto(Questionnaire questionnaire) {
         return new QuestionnaireDto(questionnaire.getQuestionnaireId(), questionnaire.getName(), questionnaire.getFirstQuestion());

@@ -25,6 +25,12 @@ public class QuestionService {
         return question;
     }
 
+    public Question findQuestionById(Long questionId)
+    {
+        return questionRepository.findById(questionId).orElseThrow(() -> new CustomException("NotFoundQuestion","There is no question with questionNumber: "
+                +questionId, HttpStatus.NOT_FOUND));
+    }
+
     public Question getNextQuestion(Long questionnaireId, Long questionNumber) throws CustomException
     {
         Questionnaire questionnaire = questionnaireService.getQuestionnaireById(questionnaireId);
