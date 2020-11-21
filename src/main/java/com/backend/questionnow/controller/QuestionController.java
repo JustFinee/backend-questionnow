@@ -7,6 +7,7 @@ import javassist.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -17,11 +18,12 @@ public class QuestionController {
 
 
     @PostMapping("/createQuestion") //to bedzie rzadko uzywane --> najczesciej przesylamy cale ankiety
-    public ResponseEntity createQuestion(@RequestBody Question question, @RequestParam Long questionnaireId) {
+    @PreAuthorize("#userId == authentication.principal.userId")
+    public ResponseEntity createQuestion(@RequestBody Question question, @RequestParam Long questionnaireId, @RequestParam Long userId) {
         try {
             return new ResponseEntity<>(questionService.saveQuestion(question, questionnaireId), HttpStatus.OK);
         } catch (CustomException e) {
-            return new ResponseEntity(e.getName()+" "+e.getMessage(), e.getHttpStatus());
+            return new ResponseEntity(e.getMessage(), e.getHttpStatus());
         }
     }
 

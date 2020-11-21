@@ -19,7 +19,6 @@ public class Answer {
     @Id
     @GeneratedValue
     Long answerId;
-
     String value;
     Long answerNumber;
     Long nextQuestionNumber;

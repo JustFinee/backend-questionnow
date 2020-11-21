@@ -24,11 +24,6 @@ public class QuestionnaireController {
     @Autowired
     UserService userService;
 
-    @PostMapping("/createQuestionnaire")
-    @PreAuthorize("#userId == authentication.principal.userId")
-    public Questionnaire createQuestionnaire(@RequestBody Questionnaire questionnaire, @RequestParam Long userId) {
-        return questionnaireService.saveQuestionnaire(questionnaire);
-    }
 
     @GetMapping("/getAllUserQuestionnaires")
     @PreAuthorize("#userId == authentication.principal.userId")
@@ -50,6 +45,17 @@ public class QuestionnaireController {
             return new ResponseEntity(e.getMessage(), e.getHttpStatus());
         }
 
+    }
+
+    @PostMapping("/saveQuestionnaire")
+    @PreAuthorize("#userId == authentication.principal.userId")
+    public ResponseEntity saveQuestionnaire(@RequestParam Long userId, @RequestBody Questionnaire questionnaire)
+    {
+        try {
+            return new ResponseEntity(questionnaireService.createQuestionnaire(questionnaire, userId), HttpStatus.CREATED);
+        } catch (CustomException e) {
+            return new ResponseEntity(e.getMessage(), e.getHttpStatus());
+        }
     }
 
     @GetMapping("/getStartQuestionnaire")

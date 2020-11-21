@@ -30,6 +30,14 @@ public class QuestionnaireService {
         return questionnaireRepository.save(questionnaire);
     }
 
+    public Questionnaire createQuestionnaire(Questionnaire questionnaire, Long userId)
+    {
+        User user = userService.findUserById(userId);
+        user.getQuestionnaireList().add(questionnaire);
+        userService.saveUser(user);
+        return questionnaire;
+    }
+
     public List<QuestionnaireDto> getAllUserQuestionnaires(Long userId) throws CustomException {
 
         User user = userService.findUserById(userId);
