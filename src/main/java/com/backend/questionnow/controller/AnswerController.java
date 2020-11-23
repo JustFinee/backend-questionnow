@@ -7,10 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 public class AnswerController {
@@ -24,6 +21,19 @@ public class AnswerController {
     {
         try {
             return new ResponseEntity(answerService.addAnswer(questionnaireId,questionId,answer), HttpStatus.CREATED);
+        }
+        catch (CustomException e)
+        {
+            return new ResponseEntity(e.getMessage(),e.getHttpStatus());
+        }
+    }
+
+    @PutMapping("/addCounter")
+    public ResponseEntity addCounter(@RequestParam Long questionId, @RequestParam Long answerNumber)
+    {
+        try {
+            answerService.addCounter(questionId,answerNumber);
+            return new ResponseEntity(HttpStatus.OK);
         }
         catch (CustomException e)
         {

@@ -1,5 +1,6 @@
 package com.backend.questionnow.service;
 
+import com.backend.questionnow.entity.Answer;
 import com.backend.questionnow.entity.Question;
 import com.backend.questionnow.entity.Questionnaire;
 import com.backend.questionnow.repository.QuestionRepository;
@@ -18,6 +19,9 @@ public class QuestionService {
     @Autowired
     QuestionnaireService questionnaireService;
 
+    @Autowired
+    AnswerService answerService;
+
     public Question saveQuestion(Question question, Long questionnaireId) throws CustomException {
         Questionnaire questionnaire = questionnaireService.getQuestionnaireById(questionnaireId);
         questionnaire.addQuestion(question);
@@ -31,9 +35,11 @@ public class QuestionService {
                 +questionId, HttpStatus.NOT_FOUND));
     }
 
-    public Question getNextQuestion(Long questionnaireId, Long questionNumber) throws CustomException
+    public Question getNextQuestion(Long questionnaireId, Long questionNumber,Long answerNumber, Long questionId) throws CustomException
     {
         Questionnaire questionnaire = questionnaireService.getQuestionnaireById(questionnaireId);
+        answerService.addCounter(questionId,answerNumber);
+
         return questionnaire.getQuestionList().stream()
                 .filter(question -> question.getQuestionNumber() == questionNumber)
                 .findFirst()

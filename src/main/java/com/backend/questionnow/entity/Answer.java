@@ -22,10 +22,12 @@ public class Answer {
     String value;
     Long answerNumber;
     Long nextQuestionNumber;
+    int counter=0;
 
-    public Answer(String value, Long answerNumber, Long nextQuestionNumber) {
+    public Answer(String value, Long answerNumber, Long nextQuestionNumber, int counter) {
         this.value = value;
         this.answerNumber = answerNumber;
         this.nextQuestionNumber = nextQuestionNumber;
+        this.counter = counter;
     }
 }

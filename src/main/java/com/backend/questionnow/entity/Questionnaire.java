@@ -11,6 +11,7 @@ import org.springframework.http.HttpStatus;
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 @Entity(name = "Questionnaire")
 @Getter
@@ -31,6 +32,7 @@ public class Questionnaire {
     )
     List<Question> questionList = new ArrayList<>();
 
+    String unicKey = UUID.randomUUID().toString();
 
     public Questionnaire(String name) {
         this.name = name;

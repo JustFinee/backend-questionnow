@@ -55,8 +55,8 @@ public class QuestionnaireService {
         return questionnaire.orElseThrow(() -> new CustomException("NotFoundQuestionnaireException","Not Found questionnaire with id: " + questionnaireId, HttpStatus.NOT_FOUND));
     }
 
-    public QuestionnaireDto getStartQuestionnaire(Long questionnaireId) throws CustomException {
-        Questionnaire questionnaire = getQuestionnaireById(questionnaireId);
+    public QuestionnaireDto getStartQuestionnaire(String unicKey) throws CustomException {
+        Questionnaire questionnaire = questionnaireRepository.findByUnicKey(unicKey);
         return mapQuestionnaireToQuestionnaireDto(questionnaire);
     }
 

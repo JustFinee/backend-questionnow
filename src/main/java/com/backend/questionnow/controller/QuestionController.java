@@ -28,10 +28,10 @@ public class QuestionController {
     }
 
     @GetMapping("/getNextQuestion")
-    public ResponseEntity getNextQuestion(@RequestParam Long questionnaireId, @RequestParam Long questionNumber)
+    public ResponseEntity getNextQuestion(@RequestParam Long questionnaireId, @RequestParam Long questionNumber, @RequestParam Long answerNumber, @RequestParam Long questionId)
     {
         try{
-            return new ResponseEntity(questionService.getNextQuestion(questionnaireId,questionNumber),HttpStatus.OK);
+            return new ResponseEntity(questionService.getNextQuestion(questionnaireId,questionNumber,answerNumber, questionId),HttpStatus.OK);
         }
         catch(CustomException e)
         {

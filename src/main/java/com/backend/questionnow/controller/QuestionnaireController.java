@@ -58,10 +58,12 @@ public class QuestionnaireController {
         }
     }
 
+
+
     @GetMapping("/getStartQuestionnaire")
-    public ResponseEntity getStartQuestionnaire(@RequestParam Long questionnaireId) {
+    public ResponseEntity getStartQuestionnaire(@RequestParam String unicKey) {
         try {
-            return new ResponseEntity(questionnaireService.getStartQuestionnaire(questionnaireId), HttpStatus.OK);
+            return new ResponseEntity(questionnaireService.getStartQuestionnaire(unicKey), HttpStatus.OK);
         } catch (CustomException e) {
             return new ResponseEntity(e.getName()+" "+e.getMessage(), e.getHttpStatus());
         }
