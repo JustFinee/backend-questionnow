@@ -40,6 +40,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/users/signup").permitAll()//
                 .antMatchers("/getStartQuestionnaire").permitAll()//
                 .antMatchers("/getNextQuestion").permitAll()//
+                .antMatchers("/createQuestionnaireFromPdf").permitAll()//
                 .antMatchers("/addCounter").permitAll()//
                 .antMatchers("/h2-console/**/**").permitAll()
                 .anyRequest().authenticated();

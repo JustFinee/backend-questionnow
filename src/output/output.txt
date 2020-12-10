@@ -1,0 +1,16 @@
+[T] To jest przykładowa ankieta, o przykładowym temacie 
+[Q] To jest przykładowe pierwszy pytanie o przykładowym brzmieniu 
+[A] To jest przykładowa odpowiedź 1 
+[A] To jest przykładowa odpowiedź 2 
+[A] To jest przykładowa odpowiedź 3 
+[A] To jest przykładowa odpowiedź 4 
+[Q] To jest przykładowe drugie pytanie o przykładowym brzmieniu 
+[A] To jest przykładowa odpowiedź 1 
+[A] To jest przykładowa odpowiedź 2 
+[A] To jest przykładowa odpowiedź 3 
+[Q] To jest przykładowe trzecie pytanie o przykładowym brzmieniu 
+[A] To jest przykładowa odpowiedź 1 
+[A] To jest przykładowa odpowiedź 2 
+[A] To jest przykładowa odpowiedź 3 
+[A] To jest przykładowa odpowiedź 4 
+[A] To jest przykładowa odpowiedź 5 

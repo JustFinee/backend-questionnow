@@ -12,7 +12,9 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
 import java.time.LocalDateTime;
 
 @RestController
@@ -91,6 +93,19 @@ public class QuestionnaireController {
         catch (CustomException e) {
             return new ResponseEntity(e.getMessage(), e.getHttpStatus());
         }
+    }
+
+    @PostMapping("/createQuestionnaireFromPdf")
+
+    public ResponseEntity createQuestionnaireFromPdf(@RequestParam("file") MultipartFile file, @RequestParam("userId") Long userId){
+        try{
+            return new ResponseEntity(questionnaireService.createQuestionnaireFromPDF(file,userId),HttpStatus.CREATED);
+        }
+        catch (CustomException e)
+        {
+            return new ResponseEntity(e.getMessage(), e.getHttpStatus());
+        }
+
     }
 
 
