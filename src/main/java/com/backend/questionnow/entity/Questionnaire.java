@@ -1,8 +1,6 @@
 package com.backend.questionnow.entity;
 
 import com.backend.questionnow.security.CustomException;
-import javassist.NotFoundException;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -36,6 +34,13 @@ public class Questionnaire {
 
     public Questionnaire(String name) {
         this.name = name;
+    }
+
+    public Questionnaire(Long questionnaireId, String name, List<Question> questionList, String unicKey) {
+        this.questionnaireId = questionnaireId;
+        this.name = name;
+        this.questionList = questionList;
+        this.unicKey = unicKey;
     }
 
     public void addQuestion(Question question) {
