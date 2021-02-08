@@ -12,9 +12,10 @@ In this app I have taken the approach of NOT using real database. Instead applic
 by Hibernate.
 
 ## Security
-JWT authorization with token is used for security layer.
+JWT ( JSON Web Token ) authorization with token is used for security layer.
 
 ## Setup
-Project uses maven as build automation tool:
-$ cd backend-questionnow
-$ mvn clean install
+Project uses maven as build automation tool:  
+$ cd backend-questionnow  
+$ mvn clean install  
+$mvn spring-boot:run
