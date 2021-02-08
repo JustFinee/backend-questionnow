@@ -1,6 +1,9 @@
 # QuestionNow
 This application allows to create, manage, solve and share questionnaires. This repository contais all buisness logic and operations related with backend topics, 
-for example with data base. This application was created for need of my final project on college.
+for example with data base. This application was created for need of my final project on college.  
+
+Link to frontend side:  
+https://github.com/JustFinee/frontend-questionnow
 
 ## Main Technologies
 Project was created with:
