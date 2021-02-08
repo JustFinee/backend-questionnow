@@ -21,4 +21,6 @@ JWT ( JSON Web Token ) authorization with token is used for security layer.
 Project uses maven as build automation tool:  
 $ cd backend-questionnow  
 $ mvn clean install  
-$mvn spring-boot:run
+$ mvn spring-boot:run
+
+Server starts on localhost:8080
